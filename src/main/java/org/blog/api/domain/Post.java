@@ -6,10 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.blog.api.domain.audit.DateAudit;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Lob;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Created by melchor
@@ -28,6 +25,9 @@ public class Post extends DateAudit {
     @Lob
     @Column(nullable = false)
     private String content;
+
+    @ManyToOne
+    private Member writer;
 
 
 }
