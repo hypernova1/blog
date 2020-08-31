@@ -1,7 +1,12 @@
 package org.blog.api.service;
 
 import lombok.RequiredArgsConstructor;
+import org.blog.api.domain.Post;
 import org.blog.api.repository.PostRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 
 /**
  * Created by melchor
@@ -10,8 +15,14 @@ import org.blog.api.repository.PostRepository;
  */
 
 @RequiredArgsConstructor
+@Service
 public class PostService {
 
     private final PostRepository posts;
+
+    public Page<Post> getList(int page, int size) {
+        PageRequest pagination = PageRequest.of(page - 1, size, Sort.Direction.DESC, "createdDate");
+        return posts.findAll(pagination);
+    }
 
 }

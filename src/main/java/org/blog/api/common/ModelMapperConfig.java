@@ -24,7 +24,6 @@ public class ModelMapperConfig {
             @Override
             protected void configure() {
                 map().setWriter(source.getWriter().getUsername());
-                map().setRegDate(source.getCreatedDate().toString());
             }
         });
 
