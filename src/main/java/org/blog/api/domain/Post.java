@@ -1,7 +1,6 @@
 package org.blog.api.domain;
 
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.blog.api.domain.audit.DateAudit;
@@ -28,7 +27,7 @@ public class Post extends DateAudit {
     private String content;
 
     @ManyToOne
-    private Member writer;
+    private Account writer;
 
     @Column(name = "is_active")
     private final Boolean active = true;

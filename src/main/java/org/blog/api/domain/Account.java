@@ -15,10 +15,10 @@ import javax.persistence.Table;
  * Time: 9:50 PM
  */
 @Entity
-@Table(name = "member")
+@Table(name = "account")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member extends DateAudit {
+public class Account extends DateAudit {
 
     @Column(length = 30, unique = true, nullable = false, updatable = false)
     private String email;

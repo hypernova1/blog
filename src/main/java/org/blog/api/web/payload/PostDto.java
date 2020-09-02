@@ -3,6 +3,7 @@ package org.blog.api.web.payload;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Created by melchor
@@ -28,6 +29,7 @@ public class PostDto {
     }
 
     @Getter @Setter
+    @ToString
     public static class RegisterRequest {
         private String title;
         private String content;

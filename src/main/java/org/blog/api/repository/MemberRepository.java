@@ -1,6 +1,6 @@
 package org.blog.api.repository;
 
-import org.blog.api.domain.Member;
+import org.blog.api.domain.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -8,5 +8,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * Date: 2020/08/31
  * Time: 10:32 PM
  */
-public interface MemberRepository extends JpaRepository<Member, Long> {
+public interface MemberRepository extends JpaRepository<Account, Long> {
 }
