@@ -1,8 +1,10 @@
 package org.blog.api.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.blog.api.domain.audit.DateAudit;
 import org.blog.api.web.payload.PostDto;
 
@@ -17,6 +19,7 @@ import javax.persistence.*;
 @Table(name = "post")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class Post extends DateAudit {
 
     @Column(nullable = false)
@@ -31,6 +34,12 @@ public class Post extends DateAudit {
 
     @Column(name = "is_active")
     private final Boolean active = true;
+
+    @Builder
+    protected Post(String title, String content) {
+        this.title = title;
+        this.content = content;
+    }
 
     public void update(PostDto.UpdateRequest request) {
         this.title = request.getTitle();

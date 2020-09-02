@@ -57,7 +57,7 @@ public class PostController {
 
     @ApiOperation("게시글 수정")
     @PutMapping("/{id}")
-    public ResponseEntity<?> updatePost(@PathVariable Long id, PostDto.UpdateRequest request) {
+    public ResponseEntity<?> updatePost(@PathVariable Long id, @RequestBody PostDto.UpdateRequest request) {
         PostDto.DetailResponse postDto = postService.update(id, request);
         return ResponseEntity.ok(postDto);
     }

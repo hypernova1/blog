@@ -45,6 +45,7 @@ public class PostService {
     public PostDto.DetailResponse update(Long id, PostDto.UpdateRequest request) {
         Post savedPost = posts.findById(id).orElseThrow(() -> new PostNotFoundException(id));
         savedPost.update(request);
+        System.out.println(savedPost);
         return modelMapper.map(savedPost, PostDto.DetailResponse.class);
     }
 

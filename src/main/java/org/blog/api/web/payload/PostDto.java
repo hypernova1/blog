@@ -24,6 +24,7 @@ public class PostDto {
     public static class DetailResponse {
         private Long id;
         private String title;
+        private String content;
         private String writer;
         private String regDate;
     }
