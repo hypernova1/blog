@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.blog.api.domain.audit.DateAudit;
+import org.blog.api.web.payload.PostDto;
 
 import javax.persistence.*;
 
@@ -29,5 +30,12 @@ public class Post extends DateAudit {
     @ManyToOne
     private Member writer;
 
+    @Column(name = "is_active")
+    private final Boolean active = true;
+
+    public void update(PostDto.UpdateRequest request) {
+        this.title = request.getTitle();
+        this.content = request.getContent();
+    }
 
 }

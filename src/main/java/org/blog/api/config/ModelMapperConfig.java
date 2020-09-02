@@ -1,7 +1,7 @@
-package org.blog.api.common;
+package org.blog.api.config;
 
 import org.blog.api.domain.Post;
-import org.blog.api.payload.PostDto;
+import org.blog.api.web.payload.PostDto;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.convention.MatchingStrategies;
@@ -20,7 +20,7 @@ public class ModelMapperConfig {
     public ModelMapper modelMapper() {
         ModelMapper modelMapper = new ModelMapper();
         modelMapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STRICT);
-        modelMapper.addMappings(new PropertyMap<Post, PostDto.ResponseList>() {
+        modelMapper.addMappings(new PropertyMap<Post, PostDto.ListResponse>() {
             @Override
             protected void configure() {
                 map().setWriter(source.getWriter().getUsername());
