@@ -5,12 +5,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 /**
  * Created by melchor
- * Date: 2020/09/02
- * Time: 4:39 PM
+ * Date: 2020/09/03
+ * Time: 9:26 PM
  */
+
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class PostNotFoundException extends RuntimeException {
-    public PostNotFoundException(Long id) {
-        super(id + "st post is not found.");
+public class AccountNotFoundException extends RuntimeException {
+    public AccountNotFoundException(String email) {
+        super(email + " is not exist");
     }
 }

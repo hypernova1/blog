@@ -1,12 +1,9 @@
 package org.blog.api.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.blog.api.domain.Post;
-import org.blog.api.exception.PostNotFoundException;
-import org.blog.api.repository.PostRepository;
+import org.blog.api.repository.post.PostRepository;
 import org.blog.api.web.payload.PostDto;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
 
 import java.util.Arrays;
 

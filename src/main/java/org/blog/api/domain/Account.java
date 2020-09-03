@@ -1,6 +1,7 @@
 package org.blog.api.domain;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.blog.api.domain.audit.DateAudit;
@@ -29,4 +30,10 @@ public class Account extends DateAudit {
     @Column(length = 200, nullable = false)
     private String password;
 
+    @Builder
+    private Account(String email, String username, String password) {
+        this.email = email;
+        this.username = username;
+        this.password = password;
+    }
 }

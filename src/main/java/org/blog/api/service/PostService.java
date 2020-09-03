@@ -3,7 +3,7 @@ package org.blog.api.service;
 import lombok.RequiredArgsConstructor;
 import org.blog.api.domain.Post;
 import org.blog.api.exception.PostNotFoundException;
-import org.blog.api.repository.PostRepository;
+import org.blog.api.repository.post.PostRepository;
 import org.blog.api.web.payload.PostDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
@@ -46,7 +46,6 @@ public class PostService {
     public PostDto.DetailResponse update(Long id, PostDto.UpdateRequest request) {
         Post savedPost = posts.findById(id).orElseThrow(() -> new PostNotFoundException(id));
         savedPost.update(request);
-        System.out.println(savedPost);
         return modelMapper.map(savedPost, PostDto.DetailResponse.class);
     }
 

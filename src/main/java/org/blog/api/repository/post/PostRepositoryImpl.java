@@ -1,4 +1,4 @@
-package org.blog.api.repository;
+package org.blog.api.repository.post;
 
 import com.querydsl.jpa.JPQLQuery;
 import org.blog.api.domain.Post;
@@ -29,6 +29,6 @@ public class PostRepositoryImpl extends QuerydslRepositorySupport implements Cus
         if (!StringUtils.isEmpty(keyword)) {
             query.where(post.title.contains(keyword), post.content.contains(keyword));
         };
-        return query.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
+        return query.where(post.active.eq(true)).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
     }
 }
