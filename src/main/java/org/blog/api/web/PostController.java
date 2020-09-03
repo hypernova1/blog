@@ -6,12 +6,12 @@ import lombok.RequiredArgsConstructor;
 import org.blog.api.domain.Post;
 import org.blog.api.service.PostService;
 import org.blog.api.web.payload.PostDto;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.List;
 
 /**
  * Created by melchor
@@ -30,8 +30,9 @@ public class PostController {
     @GetMapping
     public ResponseEntity<?> getPostList(
             @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        Page<Post> list = postService.getList(page, size);
+            @RequestParam(defaultValue = "10") int size,
+            String keyword) {
+        List<Post> list = postService.getList(page, size, keyword);
         if (list.isEmpty()) return ResponseEntity.notFound().build();
         return ResponseEntity.ok(list);
     }

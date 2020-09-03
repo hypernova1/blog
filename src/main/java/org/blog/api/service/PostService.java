@@ -6,11 +6,12 @@ import org.blog.api.exception.PostNotFoundException;
 import org.blog.api.repository.PostRepository;
 import org.blog.api.web.payload.PostDto;
 import org.modelmapper.ModelMapper;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * Created by melchor
@@ -25,9 +26,9 @@ public class PostService {
     private final PostRepository posts;
     private final ModelMapper modelMapper;
 
-    public Page<Post> getList(int page, int size) {
+    public List<Post> getList(int page, int size, String keyword) {
         PageRequest pagination = PageRequest.of(page - 1, size, Sort.Direction.DESC, "createdDate");
-        return posts.findAll(pagination);
+        return posts.findByKeyword(pagination, keyword);
     }
 
     public Long register(PostDto.RegisterRequest request) {

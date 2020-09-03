@@ -58,6 +58,7 @@ class PostControllerTest {
         mockMvc.perform(get("/v1/api/post")
                 .param("page", "1")
                 .param("size", "10")
+                .param("keyword", "1")
         )
                 .andDo(print())
                 .andExpect(status().isOk());

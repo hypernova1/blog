@@ -12,7 +12,7 @@ import org.springframework.data.jpa.repository.Query;
  * Date: 2020/08/31
  * Time: 10:31 PM
  */
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<Post, Long>, CustomPostRepository {
 
     @Query("SELECT p FROM Post p WHERE p.active = true")
     Page<Post> findAll(Pageable pageable);

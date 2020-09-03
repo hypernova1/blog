@@ -1,10 +1,6 @@
 package org.blog.api.domain;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 import org.blog.api.domain.audit.DateAudit;
 import org.blog.api.web.payload.PostDto;
 
