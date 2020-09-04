@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by melchor
@@ -26,9 +27,12 @@ public class PostService {
     private final PostRepository posts;
     private final ModelMapper modelMapper;
 
-    public List<Post> getList(int page, int size, String keyword) {
+    public List<PostDto.ListResponse> getList(int page, int size, String keyword) {
         PageRequest pagination = PageRequest.of(page - 1, size, Sort.Direction.DESC, "createdDate");
-        return posts.findByKeyword(pagination, keyword);
+        List<Post> postList = posts.findByKeyword(pagination, keyword);
+        return postList.stream()
+                .map(post ->  modelMapper.map(post, PostDto.ListResponse.class))
+                .collect(Collectors.toList());
     }
 
     public Long register(PostDto.RegisterRequest request) {

@@ -22,6 +22,7 @@ import java.util.List;
 @Api(value = "PostController V1")
 @RequestMapping("/v1/api/post")
 @RequiredArgsConstructor
+@CrossOrigin("http://localhost:5000")
 public class PostController {
 
     private final PostService postService;
@@ -32,8 +33,7 @@ public class PostController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             String keyword) {
-        List<Post> list = postService.getList(page, size, keyword);
-        if (list.isEmpty()) return ResponseEntity.notFound().build();
+        List<PostDto.ListResponse> list = postService.getList(page, size, keyword);
         return ResponseEntity.ok(list);
     }
 

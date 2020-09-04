@@ -37,16 +37,15 @@ class PostControllerTest {
     PostRepository posts;
     ObjectMapper objectMapper = new ObjectMapper();
 
-    @BeforeEach
-    @DisplayName("테스트 데이터 삽입")
-    void insert_post_list() {
-        Post post1 = Post.builder().title("title1").content("content1").build();
-        Post post2 = Post.builder().title("title2").content("content1").build();
-        Post post3 = Post.builder().title("title3").content("content1").build();
-        Post post4 = Post.builder().title("title4").content("content1").build();
-        posts.saveAll(Arrays.asList(post1, post2, post3, post4));
-    }
-
+//    @BeforeEach
+//    @DisplayName("테스트 데이터 삽입")
+//    void insert_post_list() {
+//        Post post1 = Post.builder().title("title1").content("content1").build();
+//        Post post2 = Post.builder().title("title2").content("content1").build();
+//        Post post3 = Post.builder().title("title3").content("content1").build();
+//        Post post4 = Post.builder().title("title4").content("content1").build();
+//        posts.saveAll(Arrays.asList(post1, post2, post3, post4));
+//    }
 
     @Test
     @DisplayName("게시글 리스트 가져오기")
