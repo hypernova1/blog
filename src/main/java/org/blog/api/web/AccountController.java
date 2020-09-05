@@ -2,7 +2,7 @@ package org.blog.api.web;
 
 import io.swagger.annotations.Api;
 import lombok.RequiredArgsConstructor;
-import org.blog.api.service.AuthService;
+import org.blog.api.service.AccountService;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class AccountController {
 
-    private final AuthService authService;
-
-
+    private final AccountService accountService;
 
 }

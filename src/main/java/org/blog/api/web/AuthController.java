@@ -1,8 +1,9 @@
-package org.blog.api.service;
+package org.blog.api.web;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.blog.api.service.AuthService;
 import org.blog.api.web.payload.AuthDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
