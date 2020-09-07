@@ -1,16 +1,18 @@
 package org.blog.api.service;
 
 import lombok.RequiredArgsConstructor;
-import org.blog.api.config.security.UserPrincipal;
+import org.blog.api.config.security.JwtTokenProvider;
 import org.blog.api.domain.Account;
 import org.blog.api.exception.AccountDuplicateException;
 import org.blog.api.exception.AccountNotFoundException;
 import org.blog.api.repository.AccountRepository;
 import org.blog.api.web.payload.AuthDto;
 import org.modelmapper.ModelMapper;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -21,28 +23,37 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService implements UserDetailsService {
+public class AuthService {
 
     private final ModelMapper modelMapper;
     private final AccountRepository accounts;
+    private final AuthenticationManager authenticationManager;
+    private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     public AuthDto.LoginResponse login(AuthDto.LoginRequest request) {
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String jwt = jwtTokenProvider.generationToken(authentication);
 
         Account account = accounts.findByEmail(request.getEmail())
                 .orElseThrow(() -> new AccountNotFoundException(request.getEmail()));
-
-        if (!account.getPassword().equals(request.getPassword())) {
-            throw new AccountNotFoundException(request.getEmail());
-        }
-
-        return modelMapper.map(account, AuthDto.LoginResponse.class);
+        AuthDto.LoginResponse authDto = modelMapper.map(account, AuthDto.LoginResponse.class);
+        authDto.setAccessToken(jwt);
+        return authDto;
     }
 
     public Long join(AuthDto.JoinRequest request) {
         if (isExistEmail(request.getEmail())) {
             throw new AccountDuplicateException(request.getEmail());
         }
-
+        request.setPassword(passwordEncoder.encode(request.getPassword()));
         Account account = modelMapper.map(request, Account.class);
         Account savedAccount = accounts.save(account);
 
@@ -53,9 +64,5 @@ public class AuthService implements UserDetailsService {
         return accounts.findByEmail(email).isPresent();
     }
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Account account = accounts.findByEmail(email).orElseThrow(() -> new AccountNotFoundException(email));
-        return UserPrincipal.create(account);
-    }
+
 }

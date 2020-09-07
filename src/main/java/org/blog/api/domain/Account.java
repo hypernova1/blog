@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -37,12 +38,13 @@ public class Account extends DateAudit {
     private boolean active = true;
 
     @ManyToMany
-    private Set<Role> roles = new HashSet<>();
+    private Collection<Role> roles = new HashSet<>();
 
     @Builder
-    private Account(String email, String username, String password) {
+    private Account(String email, String username, String password, Collection<Role> roles) {
         this.email = email;
         this.username = username;
         this.password = password;
+        this.roles = roles;
     }
 }

@@ -4,8 +4,10 @@ import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
 import org.apache.tomcat.util.descriptor.web.SecurityConstraint;
+import org.blog.api.domain.Account;
 import org.blog.api.domain.Role;
 import org.blog.api.domain.RoleName;
+import org.blog.api.repository.AccountRepository;
 import org.blog.api.repository.RoleRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,8 +16,12 @@ import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactor
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 @SpringBootApplication
 @EnableJpaAuditing
@@ -26,14 +32,20 @@ public class Application {
     }
 
 //    @Bean
-//    CommandLineRunner commandLineRunner(RoleRepository roleRepository) {
+//    CommandLineRunner commandLineRunner(RoleRepository roleRepository,
+//                                        AccountRepository accountRepository,
+//                                        PasswordEncoder passwordEncoder) {
 //        return args -> {
-//            Role role = new Role();
-//            role.setName(RoleName.ADMIN);
-//            Role role2 = new Role();
-//            role2.setName(RoleName.USER);
+//            Role admin = roleRepository.findByName(RoleName.ADMIN).orElse(null);
 //
-//            roleRepository.saveAll(Arrays.asList(role, role2));
+//            Account account = Account.builder()
+//                    .email("hypemova@gmail.com")
+//                    .username("sam")
+//                    .password(passwordEncoder.encode("1111"))
+//                    .roles(Collections.singleton(admin))
+//                    .build();
+//
+//            accountRepository.save(account);
 //        };
 //    }
 

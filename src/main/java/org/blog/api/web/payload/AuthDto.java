@@ -2,6 +2,7 @@ package org.blog.api.web.payload;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 /**
  * Created by melchor
@@ -17,9 +18,12 @@ public class AuthDto {
     }
 
     @Getter @Setter
+    @ToString
     public static class LoginResponse {
         private String email;
         private String username;
+        private String accessToken;
+        private String tokenType = "Bearer";
     }
 
     @Getter @Setter
