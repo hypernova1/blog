@@ -1,12 +1,16 @@
 package org.blog.api.service;
 
 import lombok.RequiredArgsConstructor;
+import org.blog.api.config.security.UserPrincipal;
 import org.blog.api.domain.Account;
 import org.blog.api.exception.AccountDuplicateException;
 import org.blog.api.exception.AccountNotFoundException;
 import org.blog.api.repository.AccountRepository;
 import org.blog.api.web.payload.AuthDto;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 /**
@@ -17,7 +21,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class AuthService implements UserDetailsService {
 
     private final ModelMapper modelMapper;
     private final AccountRepository accounts;
@@ -47,5 +51,11 @@ public class AuthService {
 
     public boolean isExistEmail(String email) {
         return accounts.findByEmail(email).isPresent();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Account account = accounts.findByEmail(email).orElseThrow(() -> new AccountNotFoundException(email));
+        return UserPrincipal.create(account);
     }
 }
