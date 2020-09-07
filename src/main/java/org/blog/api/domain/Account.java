@@ -8,7 +8,10 @@ import org.blog.api.domain.audit.DateAudit;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by melchor
@@ -29,6 +32,12 @@ public class Account extends DateAudit {
 
     @Column(length = 200, nullable = false)
     private String password;
+
+    @Column(name = "is_active", nullable = false)
+    private boolean active = true;
+
+    @ManyToMany
+    private Set<Role> roles = new HashSet<>();
 
     @Builder
     private Account(String email, String username, String password) {
