@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.blog.api.domain.audit.DateAudit;
+import org.blog.api.web.payload.UserDto;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -46,5 +47,11 @@ public class Account extends DateAudit {
         this.username = username;
         this.password = password;
         this.roles = roles;
+    }
+
+    public void update(UserDto.ModifyRequest request) {
+        this.username = request.getUsername();
+        this.password = request.getPassword();
+
     }
 }
