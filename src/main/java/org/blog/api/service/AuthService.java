@@ -3,9 +3,13 @@ package org.blog.api.service;
 import lombok.RequiredArgsConstructor;
 import org.blog.api.config.security.JwtTokenProvider;
 import org.blog.api.domain.Account;
+import org.blog.api.domain.Role;
+import org.blog.api.domain.RoleName;
 import org.blog.api.exception.AccountDuplicateException;
 import org.blog.api.exception.AccountNotFoundException;
+import org.blog.api.exception.RoleNotFoundException;
 import org.blog.api.repository.AccountRepository;
+import org.blog.api.repository.RoleRepository;
 import org.blog.api.web.payload.AuthDto;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -27,6 +31,7 @@ public class AuthService {
 
     private final ModelMapper modelMapper;
     private final AccountRepository accounts;
+    private final RoleRepository roles;
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
@@ -55,6 +60,8 @@ public class AuthService {
         }
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Account account = modelMapper.map(request, Account.class);
+        Role role = this.roles.findByName(RoleName.USER).orElseThrow(RoleNotFoundException::new);
+        account.getRoles().add(role);
         Account savedAccount = accounts.save(account);
 
         return savedAccount.getId();
