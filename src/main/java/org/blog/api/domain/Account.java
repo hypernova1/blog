@@ -29,7 +29,7 @@ public class Account extends DateAudit {
     @Column(length = 30, unique = true, nullable = false, updatable = false)
     private String email;
 
-    @Column(length = 30, nullable = false, updatable = false)
+    @Column(length = 30, nullable = false)
     private String username;
 
     @Column(length = 200, nullable = false)

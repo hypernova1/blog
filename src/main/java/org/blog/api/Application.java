@@ -36,13 +36,17 @@ public class Application {
 //                                        AccountRepository accountRepository,
 //                                        PasswordEncoder passwordEncoder) {
 //        return args -> {
-//            Role admin = roleRepository.findByName(RoleName.ADMIN).orElse(null);
+//            Role roleAdmin = new Role();
+//            roleAdmin.setName(RoleName.ROLE_ADMIN);
+//            Role roleUser = new Role();
+//            roleUser.setName(RoleName.ROLE_USER);
+//            roleRepository.saveAll(Arrays.asList(roleAdmin, roleUser));
 //
 //            Account account = Account.builder()
 //                    .email("hypemova@gmail.com")
 //                    .username("sam")
 //                    .password(passwordEncoder.encode("1111"))
-//                    .roles(Collections.singleton(admin))
+//                    .roles(Collections.singleton(roleAdmin))
 //                    .build();
 //
 //            accountRepository.save(account);

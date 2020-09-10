@@ -60,7 +60,7 @@ public class AuthService {
         }
         request.setPassword(passwordEncoder.encode(request.getPassword()));
         Account account = modelMapper.map(request, Account.class);
-        Role role = this.roles.findByName(RoleName.USER).orElseThrow(RoleNotFoundException::new);
+        Role role = this.roles.findByName(RoleName.ROLE_USER).orElseThrow(RoleNotFoundException::new);
         account.getRoles().add(role);
         Account savedAccount = accounts.save(account);
 

@@ -15,7 +15,6 @@ class ApplicationTests {
 
     @Test
     void test() {
-        System.out.println(1);
     }
 
 

@@ -52,7 +52,6 @@ class PostControllerTest extends BasedTest {
         PostDto.RegisterRequest request = new PostDto.RegisterRequest();
         request.setTitle("title");
         request.setContent("content");
-        System.out.println(request);
         String json = objectMapper.writeValueAsString(request);
         mockMvc.perform(post("/v1/api/post")
                 .content(json))

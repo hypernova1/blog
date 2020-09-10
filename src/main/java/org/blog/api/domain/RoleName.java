@@ -7,6 +7,6 @@ package org.blog.api.domain;
  */
 public enum RoleName {
 
-    ADMIN, USER
+    ROLE_ADMIN, ROLE_USER
 
 }

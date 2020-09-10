@@ -2,7 +2,6 @@ package org.blog.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,7 +31,6 @@ public abstract class BasedTest {
     @BeforeEach
     public void setUp() {
         objectMapper = new ObjectMapper();
-        MockitoAnnotations.initMocks(this);
         this.mockMvc = webAppContextSetup(webApplicationContext)
                 .defaultRequest(get("/").contentType(MediaType.APPLICATION_JSON).characterEncoding("UTF-8")).build();
     }
