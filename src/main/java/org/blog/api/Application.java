@@ -17,6 +17,7 @@ import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -52,6 +53,16 @@ public class Application {
 //            accountRepository.save(account);
 //        };
 //    }
+
+    @Bean
+    public CommonsRequestLoggingFilter requestLoggingFilter() {
+        CommonsRequestLoggingFilter loggingFilter = new CommonsRequestLoggingFilter();
+        loggingFilter.setIncludeClientInfo(true);
+        loggingFilter.setIncludeQueryString(true);
+        loggingFilter.setIncludePayload(true);
+        loggingFilter.setMaxPayloadLength(64000);
+        return loggingFilter;
+    }
 
     @Bean
     public ServletWebServerFactory servletContainer() {

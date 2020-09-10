@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
 /**
  * Created by melchor
  * Date: 2020/08/31
@@ -32,13 +35,17 @@ public class PostDto {
     @Getter @Setter
     @ToString
     public static class RegisterRequest {
+        @NotBlank
         private String title;
+        @NotNull
         private String content;
     }
 
     @Getter @Setter
     public static class UpdateRequest {
+        @NotBlank
         private String title;
+        @NotNull
         private String content;
     }
 }

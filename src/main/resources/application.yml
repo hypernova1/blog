@@ -23,7 +23,12 @@ server:
     key-store-type: PKCS12
     key-alias: bootsecurity
 
+logging:
+  level:
+    root: info
+
 app:
   jwt:
     secret: melchor
     expiration-in-ms: 864000000
+

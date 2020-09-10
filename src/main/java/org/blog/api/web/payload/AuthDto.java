@@ -2,7 +2,9 @@ package org.blog.api.web.payload;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 /**
  * Created by melchor
@@ -13,12 +15,13 @@ public class AuthDto {
 
     @Getter @Setter
     public static class LoginRequest {
+        @NotBlank
         String email;
+        @NotBlank
         String password;
     }
 
     @Getter @Setter
-    @ToString
     public static class LoginResponse {
         private String email;
         private String username;
@@ -28,8 +31,12 @@ public class AuthDto {
 
     @Getter @Setter
     public static class JoinRequest {
+        @NotBlank
+        @Email
         private String email;
+        @NotBlank
         private String username;
+        @NotBlank
         private String password;
     }
 
