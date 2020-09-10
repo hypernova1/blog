@@ -1,22 +1,13 @@
-package org.blog.api.controller;
+package org.blog.api.web;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.blog.api.domain.Post;
+import org.blog.api.BasedTest;
 import org.blog.api.repository.post.PostRepository;
 import org.blog.api.web.payload.PostDto;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
-import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,15 +18,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  * Date: 2020/08/31
  * Time: 10:50 PM
  */
-@SpringBootTest
-@AutoConfigureMockMvc
-class PostControllerTest {
+
+class PostControllerTest extends BasedTest {
 
     @Autowired
-    MockMvc mockMvc;
-    @Autowired
     PostRepository posts;
-    ObjectMapper objectMapper = new ObjectMapper();
 
 //    @BeforeEach
 //    @DisplayName("테스트 데이터 삽입")
@@ -68,7 +55,7 @@ class PostControllerTest {
         System.out.println(request);
         String json = objectMapper.writeValueAsString(request);
         mockMvc.perform(post("/v1/api/post")
-                .contentType(MediaType.APPLICATION_JSON).content(json))
+                .content(json))
             .andDo(print())
             .andExpect(status().isCreated());
     }
@@ -82,7 +69,7 @@ class PostControllerTest {
         request.setContent("update content");
         String json = objectMapper.writeValueAsString(request);
         MvcResult result = mockMvc.perform(put("/v1/api/post/1")
-                .contentType(MediaType.APPLICATION_JSON).content(json))
+                .content(json))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn();
