@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Getter @Setter
 @EqualsAndHashCode
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class UserPrincipal implements UserDetails {
 
     private Long id;

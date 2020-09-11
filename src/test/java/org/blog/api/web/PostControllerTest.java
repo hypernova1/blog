@@ -2,7 +2,9 @@ package org.blog.api.web;
 
 import org.blog.api.BasedTest;
 import org.blog.api.repository.post.PostRepository;
+import org.blog.api.web.payload.AuthDto;
 import org.blog.api.web.payload.PostDto;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ class PostControllerTest extends BasedTest {
     @Autowired
     PostRepository posts;
 
+    private String token;
+
 //    @BeforeEach
 //    @DisplayName("테스트 데이터 삽입")
 //    void insert_post_list() {
@@ -33,6 +37,26 @@ class PostControllerTest extends BasedTest {
 //        Post post4 = Post.builder().title("title4").content("content1").build();
 //        posts.saveAll(Arrays.asList(post1, post2, post3, post4));
 //    }
+
+    @BeforeEach
+    @Test
+    public void login() throws Exception {
+        AuthDto.LoginRequest loginRequest = new AuthDto.LoginRequest();
+        loginRequest.setEmail("hypemova@gmail.com");
+        loginRequest.setPassword("1111");
+        String json = objectMapper.writeValueAsString(loginRequest);
+
+        MvcResult result = mockMvc.perform(post("/v1/api/auth/login").content(json))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andReturn();
+
+        AuthDto.LoginResponse loginResponse = objectMapper.readValue(result.getResponse().getContentAsString(), AuthDto.LoginResponse.class);
+        String accessToken = loginResponse.getAccessToken();
+        String tokenType = loginResponse.getTokenType();
+
+        this.token = tokenType + " " + accessToken;
+    }
 
     @Test
     @DisplayName("게시글 리스트 가져오기")
@@ -54,6 +78,7 @@ class PostControllerTest extends BasedTest {
         request.setContent("content");
         String json = objectMapper.writeValueAsString(request);
         mockMvc.perform(post("/v1/api/post")
+                .header("Authorization", token)
                 .content(json))
             .andDo(print())
             .andExpect(status().isCreated());

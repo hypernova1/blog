@@ -1,5 +1,6 @@
 package org.blog.api.domain.audit;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -16,6 +17,7 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @MappedSuperclass
+@EqualsAndHashCode(of = "id", callSuper = false)
 public class DateAudit {
 
     @Id

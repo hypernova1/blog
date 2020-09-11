@@ -1,6 +1,8 @@
 package org.blog.api.service;
 
 import lombok.RequiredArgsConstructor;
+import org.blog.api.config.security.UserPrincipal;
+import org.blog.api.domain.Account;
 import org.blog.api.domain.Post;
 import org.blog.api.exception.PostNotFoundException;
 import org.blog.api.repository.post.PostRepository;
@@ -35,25 +37,34 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
-    public Long register(PostDto.RegisterRequest request) {
+    @Transactional
+    public Long register(PostDto.RegisterRequest request, UserPrincipal authUser) {
         Post post = modelMapper.map(request, Post.class);
         Post savedPost = posts.save(post);
+        Account writer = modelMapper.map(authUser, Account.class);
+        savedPost.setWriter(writer);
         return savedPost.getId();
     }
 
-    public PostDto.DetailResponse get(Long id) {
+    public PostDto.DetailResponse getDetail(Long id) {
         Post post = posts.findById(id).orElseThrow(() -> new PostNotFoundException(id));
         return modelMapper.map(post, PostDto.DetailResponse.class);
     }
 
     @Transactional
-    public PostDto.DetailResponse update(Long id, PostDto.UpdateRequest request) {
+    public PostDto.DetailResponse update(Long id, PostDto.UpdateRequest request, UserPrincipal authUser) {
         Post savedPost = posts.findById(id).orElseThrow(() -> new PostNotFoundException(id));
+        savedPost.verifyWriter(authUser);
         savedPost.update(request);
         return modelMapper.map(savedPost, PostDto.DetailResponse.class);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id, UserPrincipal authUser) {
+        Post savedPost = posts.findById(id).orElseThrow(() -> new PostNotFoundException(id));
+        savedPost.verifyWriter(authUser);
         posts.deleteById(id);
     }
+
+
+
 }

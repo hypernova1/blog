@@ -1,7 +1,9 @@
 package org.blog.api.domain;
 
 import lombok.*;
+import org.blog.api.config.security.UserPrincipal;
 import org.blog.api.domain.audit.DateAudit;
+import org.blog.api.exception.NotEqualWriterException;
 import org.blog.api.web.payload.PostDto;
 
 import javax.persistence.*;
@@ -40,6 +42,16 @@ public class Post extends DateAudit {
     public void update(PostDto.UpdateRequest request) {
         this.title = request.getTitle();
         this.content = request.getContent();
+    }
+
+    public void setWriter(Account writer) {
+        this.writer = writer;
+    }
+
+    public void verifyWriter(UserPrincipal authUser) {
+        if (!this.writer.getId().equals(authUser.getId())) {
+            throw new NotEqualWriterException(this.getId(), authUser.getEmail());
+        }
     }
 
 }
