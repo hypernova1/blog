@@ -1,7 +1,9 @@
 package org.blog.api.domain;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.blog.api.domain.audit.DateAudit;
 
 import javax.persistence.Column;
@@ -15,6 +17,7 @@ import javax.persistence.Entity;
 @Entity
 @Getter
 @Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Tag extends DateAudit {
     @Column(unique = true, nullable = false)
     private String name;

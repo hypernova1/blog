@@ -6,7 +6,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.annotation.Nullable;
 
 /**
  * Created by melchor
@@ -17,7 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 public interface PostRepository extends JpaRepository<Post, Long>, CustomPostRepository {
 
     @Query("SELECT p FROM Post p WHERE p.active = true")
-    Page<Post> findAll(Pageable pageable);
+    @NonNull
+    Page<Post> findAll(@Nullable Pageable pageable);
 
     @Modifying
     @Query("update Post p SET p.active = false WHERE p.id = :id")

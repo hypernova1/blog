@@ -7,6 +7,8 @@ import org.blog.api.exception.NotEqualWriterException;
 import org.blog.api.web.payload.PostDto;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by melchor
@@ -30,6 +32,9 @@ public class Post extends DateAudit {
     @ManyToOne
     private Account writer;
 
+    @OneToMany
+    private Set<Tag> tags = new HashSet<>();
+
     @Column(name = "is_active")
     private final Boolean active = true;
 
@@ -37,6 +42,10 @@ public class Post extends DateAudit {
     protected Post(String title, String content) {
         this.title = title;
         this.content = content;
+    }
+
+    public void addTag(Tag tag) {
+        this.tags.add(tag);
     }
 
     public void update(PostDto.UpdateRequest request) {

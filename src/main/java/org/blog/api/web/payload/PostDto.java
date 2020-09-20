@@ -4,9 +4,11 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.blog.api.domain.Tag;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 /**
  * Created by melchor
@@ -30,6 +32,7 @@ public class PostDto {
         private String content;
         private String writer;
         private String regDate;
+        private Set<Tag> tags;
     }
 
     @Getter @Setter
@@ -39,6 +42,7 @@ public class PostDto {
         private String title;
         @NotNull
         private String content;
+        private Set<Tag> tags;
     }
 
     @Getter @Setter
@@ -47,5 +51,6 @@ public class PostDto {
         private String title;
         @NotNull
         private String content;
+        private Set<Tag> tags;
     }
 }
