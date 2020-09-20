@@ -3,7 +3,12 @@ package org.blog.api.service;
 import lombok.RequiredArgsConstructor;
 import org.blog.api.domain.Tag;
 import org.blog.api.repository.TagRepository;
+import org.blog.api.web.payload.TagDto;
 import org.springframework.stereotype.Service;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by melchor
@@ -18,6 +23,19 @@ public class TagService {
 
     public Tag findOrCreate(String name) {
         return tags.findByName(name).orElseGet(() -> tags.save(Tag.builder().name(name).build()));
+    }
+    public void findOrCreate(Collection<TagDto> tagList) {
+        Set<String> unregisterTagNames = new HashSet<>();
+        tagList.forEach(tag -> {
+            if (!this.tags.findByName(tag.getName()).isPresent()) {
+                unregisterTagNames.add(tag.getName());
+            }
+        });
+        Set<Tag> unregisterTags = new HashSet<>();
+        unregisterTagNames.forEach(tagName -> {
+            unregisterTags.add(Tag.builder().name(tagName).build());
+        });
+        tags.saveAll(unregisterTags);
     }
 
 }

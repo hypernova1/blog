@@ -28,6 +28,7 @@ public class PostService {
 
     private final PostRepository posts;
     private final ModelMapper modelMapper;
+    private final TagService tagService;
 
     public List<PostDto.ListResponse> getList(int page, int size, String keyword) {
         PageRequest pagination = PageRequest.of(page - 1, size, Sort.Direction.DESC, "createdDate");
@@ -39,6 +40,7 @@ public class PostService {
 
     @Transactional
     public Long register(PostDto.RegisterRequest request, UserPrincipal authUser) {
+        tagService.findOrCreate(request.getTags());
         Post post = modelMapper.map(request, Post.class);
         Post savedPost = posts.save(post);
         Account writer = modelMapper.map(authUser, Account.class);
@@ -53,6 +55,7 @@ public class PostService {
 
     @Transactional
     public PostDto.DetailResponse update(Long id, PostDto.UpdateRequest request, UserPrincipal authUser) {
+        tagService.findOrCreate(request.getTags());
         Post savedPost = posts.findById(id).orElseThrow(() -> new PostNotFoundException(id));
         savedPost.verifyWriter(authUser);
         savedPost.update(request);
