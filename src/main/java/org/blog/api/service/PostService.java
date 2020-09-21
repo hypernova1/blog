@@ -3,8 +3,11 @@ package org.blog.api.service;
 import lombok.RequiredArgsConstructor;
 import org.blog.api.config.security.UserPrincipal;
 import org.blog.api.domain.Account;
+import org.blog.api.domain.Category;
 import org.blog.api.domain.Post;
+import org.blog.api.exception.CategoryNotFoundException;
 import org.blog.api.exception.PostNotFoundException;
+import org.blog.api.repository.CategoryRepository;
 import org.blog.api.repository.post.PostRepository;
 import org.blog.api.web.payload.PostDto;
 import org.modelmapper.ModelMapper;
@@ -27,12 +30,15 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository posts;
+    private final CategoryRepository categories;
     private final ModelMapper modelMapper;
     private final TagService tagService;
 
-    public List<PostDto.ListResponse> getList(int page, int size, String keyword) {
+    public List<PostDto.ListResponse> getList(String categoryName, int page, int size, String keyword) {
+        Category category = categories.findByName(categoryName)
+                .orElseThrow(() -> new CategoryNotFoundException(categoryName));
         PageRequest pagination = PageRequest.of(page - 1, size, Sort.Direction.DESC, "createdDate");
-        List<Post> postList = posts.findByKeyword(pagination, keyword);
+        List<Post> postList = posts.findByKeyword(pagination, category, keyword);
         return postList.stream()
                 .map(post ->  modelMapper.map(post, PostDto.ListResponse.class))
                 .collect(Collectors.toList());
@@ -40,8 +46,11 @@ public class PostService {
 
     @Transactional
     public Long register(PostDto.RegisterRequest request, UserPrincipal authUser) {
+        Category category = categories.findByName(request.getCategoryName())
+                .orElseThrow(() -> new CategoryNotFoundException(request.getCategoryName()));
         tagService.findOrCreate(request.getTags());
         Post post = modelMapper.map(request, Post.class);
+        post.setCategory(category);
         Post savedPost = posts.save(post);
         Account writer = modelMapper.map(authUser, Account.class);
         savedPost.setWriter(writer);
@@ -56,9 +65,12 @@ public class PostService {
     @Transactional
     public PostDto.DetailResponse update(Long id, PostDto.UpdateRequest request, UserPrincipal authUser) {
         tagService.findOrCreate(request.getTags());
+        Category category = categories.findByName(request.getCategoryName())
+                .orElseThrow(() -> new CategoryNotFoundException(request.getCategoryName()));
         Post savedPost = posts.findById(id).orElseThrow(() -> new PostNotFoundException(id));
         savedPost.verifyWriter(authUser);
         savedPost.update(request);
+        savedPost.setCategory(category);
         return modelMapper.map(savedPost, PostDto.DetailResponse.class);
     }
 
@@ -67,7 +79,5 @@ public class PostService {
         savedPost.verifyWriter(authUser);
         posts.deleteById(id);
     }
-
-
 
 }

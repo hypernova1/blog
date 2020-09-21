@@ -23,26 +23,24 @@ import java.util.List;
 @Api(value = "PostController V1")
 @RequestMapping("/v1/api/post")
 @RequiredArgsConstructor
-@CrossOrigin("http://localhost:5000")
 public class PostController {
 
     private final PostService postService;
 
     @ApiOperation("게시글 목록 조회")
-    @GetMapping
+    @GetMapping("/{categoryName}")
     public ResponseEntity<?> getPostList(
+            @PathVariable String categoryName,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size,
             String keyword) {
-        List<PostDto.ListResponse> list = postService.getList(page, size, keyword);
+        List<PostDto.ListResponse> list = postService.getList(categoryName, page, size, keyword);
         return ResponseEntity.ok(list);
     }
 
     @ApiOperation("게시글 등록")
     @PostMapping
     public ResponseEntity<?> registerPost(@RequestBody PostDto.RegisterRequest request, @AuthUser UserPrincipal authUser) {
-        System.out.println("!!!!");
-        System.out.println(authUser.getId());
         Long id = postService.register(request, authUser);
         if (id == null) return ResponseEntity.badRequest().build();
 

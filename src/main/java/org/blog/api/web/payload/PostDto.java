@@ -21,6 +21,7 @@ public class PostDto {
         private String title;
         private String writer;
         private String regDate;
+        private String categoryName;
     }
 
     @Getter @Setter
@@ -31,6 +32,7 @@ public class PostDto {
         private String writer;
         private String regDate;
         private Set<TagDto> tags;
+        private String categoryName;
     }
 
     @Getter @Setter
@@ -41,6 +43,7 @@ public class PostDto {
         @NotNull
         private String content;
         private Set<TagDto> tags;
+        private String categoryName;
     }
 
     @Getter @Setter
@@ -50,5 +53,6 @@ public class PostDto {
         @NotNull
         private String content;
         private Set<TagDto> tags;
+        private String categoryName;
     }
 }

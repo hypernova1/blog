@@ -1,6 +1,7 @@
 package org.blog.api.repository.post;
 
 import com.querydsl.jpa.JPQLQuery;
+import org.blog.api.domain.Category;
 import org.blog.api.domain.Post;
 import org.blog.api.domain.Tag;
 import org.springframework.data.domain.Pageable;
@@ -25,15 +26,15 @@ public class PostRepositoryImpl extends QuerydslRepositorySupport implements Cus
         super(Post.class);
     }
 
-    public List<Post> findByKeyword(Pageable pageable, String keyword) {
-        JPQLQuery<Post> query = from(post);
+    public List<Post> findByKeyword(Pageable pageable, Category category, String keyword) {
+        JPQLQuery<Post> query = from(post).where(post.active.eq(true).and(post.category.eq(category)));
         if (!StringUtils.isEmpty(keyword)) {
             if (keyword.equals("tag")) {
-                post.tags.contains(Tag.builder().name(keyword).build());
+                query.where(post.tags.contains(Tag.builder().name(keyword).build()));
             } else {
                 query.where(post.title.contains(keyword), post.content.contains(keyword));
             }
         };
-        return query.where(post.active.eq(true)).offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
+        return query.offset(pageable.getOffset()).limit(pageable.getPageSize()).fetch();
     }
 }

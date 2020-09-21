@@ -35,6 +35,9 @@ public class Post extends DateAudit {
     @OneToMany
     private Set<Tag> tags = new HashSet<>();
 
+    @ManyToOne
+    private Category category;
+
     @Column(name = "is_active")
     private final Boolean active = true;
 
@@ -55,6 +58,10 @@ public class Post extends DateAudit {
 
     public void setWriter(Account writer) {
         this.writer = writer;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public void verifyWriter(UserPrincipal authUser) {

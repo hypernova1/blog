@@ -1,5 +1,6 @@
 package org.blog.api.repository.post;
 
+import org.blog.api.domain.Category;
 import org.blog.api.domain.Post;
 import org.springframework.data.domain.Pageable;
 
@@ -11,5 +12,5 @@ import java.util.List;
  * Time: 11:50 AM
  */
 public interface CustomPostRepository {
-    List<Post> findByKeyword(Pageable pageable, String keyword);
+    List<Post> findByKeyword(Pageable pageable, Category category, String keyword);
 }
