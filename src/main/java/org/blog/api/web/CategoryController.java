@@ -1,6 +1,7 @@
 package org.blog.api.web;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.blog.api.service.CategoryService;
@@ -26,12 +27,14 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    @ApiOperation("카테고리 목록 조회")
     @GetMapping
     public ResponseEntity<?> getCategoryList() {
         List<CategoryDto> categories = categoryService.getList();
         return ResponseEntity.ok(categories);
     }
 
+    @ApiOperation("카테고리 등록")
     @PostMapping
     public ResponseEntity<?> registerCategory(CategoryDto categoryDto) {
         Long id = categoryService.register(categoryDto);
@@ -39,6 +42,7 @@ public class CategoryController {
         return ResponseEntity.created(location).build();
     }
 
+    @ApiOperation("카테고리 수정")
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCategory(@PathVariable Long id, CategoryDto categoryDto) {
         categoryService.update(id, categoryDto);

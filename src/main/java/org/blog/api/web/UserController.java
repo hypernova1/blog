@@ -1,6 +1,7 @@
 package org.blog.api.web;
 
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.blog.api.config.security.AuthUser;
 import org.blog.api.config.security.UserPrincipal;
@@ -26,6 +27,7 @@ public class UserController {
 
     private final UserService userService;
 
+    @ApiOperation("유저 정보 업데이트")
     @PutMapping
     public ResponseEntity<?> modifyInfo(@RequestBody UserDto.ModifyRequest request, @AuthUser UserPrincipal authUser) {
         UserDto.InfoResponse userDto = userService.modifyInfo(request, authUser);
