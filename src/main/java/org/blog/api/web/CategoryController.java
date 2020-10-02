@@ -2,7 +2,6 @@ package org.blog.api.web;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.blog.api.service.CategoryService;
 import org.blog.api.web.payload.CategoryDto;
