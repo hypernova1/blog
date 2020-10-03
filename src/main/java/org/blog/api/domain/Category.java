@@ -24,7 +24,11 @@ public class Category extends DateAudit {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String path;
+
     public void update(CategoryDto categoryDto) {
         this.name = categoryDto.getName();
+        this.path = categoryDto.getPath();
     }
 }

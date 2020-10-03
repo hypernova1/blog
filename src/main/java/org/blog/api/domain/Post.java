@@ -7,7 +7,9 @@ import org.blog.api.exception.NotEqualWriterException;
 import org.blog.api.web.payload.PostDto;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -38,6 +40,9 @@ public class Post extends DateAudit {
     @ManyToOne
     private Category category;
 
+    @OneToMany
+    private List<Comment> comments = new ArrayList<>();
+
     @Column(name = "is_active")
     private final Boolean active = true;
 
@@ -49,6 +54,10 @@ public class Post extends DateAudit {
 
     public void addTag(Tag tag) {
         this.tags.add(tag);
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
     }
 
     public void update(PostDto.UpdateRequest request) {

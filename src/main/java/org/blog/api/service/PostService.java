@@ -74,6 +74,7 @@ public class PostService {
         return modelMapper.map(savedPost, PostDto.DetailResponse.class);
     }
 
+    @Transactional
     public void delete(Long id, UserPrincipal authUser) {
         Post savedPost = posts.findById(id).orElseThrow(() -> new PostNotFoundException(id));
         savedPost.verifyWriter(authUser);
