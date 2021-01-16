@@ -1,14 +1,10 @@
 package org.blog.api.config.security;
 
 import lombok.*;
-import org.blog.api.domain.Account;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 /**
  * Created by melchor
@@ -27,22 +23,6 @@ public class UserPrincipal implements UserDetails {
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
     private boolean enabled;
-
-    public static UserPrincipal create(Account account) {
-        Set<GrantedAuthority> authorities = account.getRoles()
-                .stream()
-                .map(role ->new SimpleGrantedAuthority(role.getName().name()))
-                .collect(Collectors.toSet());
-
-        return new UserPrincipal(
-                account.getId(),
-                account.getUsername(),
-                account.getEmail(),
-                account.getPassword(),
-                authorities,
-                account.isActive()
-        );
-    }
 
     @Override
     public boolean isAccountNonExpired() {

@@ -4,7 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.blog.api.config.security.AuthUser;
-import org.blog.api.config.security.UserPrincipal;
+import org.blog.api.domain.Account;
 import org.blog.api.service.PostService;
 import org.blog.api.web.payload.PostDto;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +40,8 @@ public class PostController {
 
     @ApiOperation("게시글 등록")
     @PostMapping
-    public ResponseEntity<?> registerPost(@RequestBody PostDto.RegisterRequest request, @AuthUser UserPrincipal authUser) {
-        Long id = postService.register(request, authUser);
+    public ResponseEntity<?> registerPost(@RequestBody PostDto.RegisterRequest request, @AuthUser Account account) {
+        Long id = postService.register(request, account);
         if (id == null) return ResponseEntity.badRequest().build();
 
         URI uri = ServletUriComponentsBuilder
@@ -62,15 +62,15 @@ public class PostController {
     public ResponseEntity<?> updatePost(
             @PathVariable Long id,
             @RequestBody PostDto.UpdateRequest request,
-            @AuthUser UserPrincipal authUser) {
-        PostDto.DetailResponse postDto = postService.update(id, request, authUser);
+            @AuthUser Account account) {
+        PostDto.DetailResponse postDto = postService.update(id, request, account);
         return ResponseEntity.ok(postDto);
     }
 
     @ApiOperation("게시글 삭제")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deletePost(@PathVariable Long id, @AuthUser UserPrincipal authUser) {
-        postService.delete(id, authUser);
+    public ResponseEntity<?> deletePost(@PathVariable Long id, @AuthUser Account account) {
+        postService.delete(id, account);
         return ResponseEntity.ok().build();
     }
 

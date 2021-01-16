@@ -29,12 +29,12 @@ public class JwtTokenProvider {
 
     public String generationToken(Authentication authentication) {
 
-        UserPrincipal userPrincipal = (UserPrincipal) authentication.getPrincipal();
+        MemberAccount memberAccount = (MemberAccount) authentication.getPrincipal();
         Date now = new Date();
         Date expired = new Date(now.getTime() + jwtExpirationInMs);
 
         return JWT.create()
-                .withSubject(userPrincipal.getEmail())
+                .withSubject(memberAccount.getAccount().getEmail())
                 .withIssuedAt(now)
                 .withExpiresAt(expired)
                 .sign(Algorithm.HMAC512(jwtSecret.getBytes()));

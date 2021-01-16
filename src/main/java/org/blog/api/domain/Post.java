@@ -73,10 +73,4 @@ public class Post extends DateAudit {
         this.category = category;
     }
 
-    public void verifyWriter(UserPrincipal authUser) {
-        if (!this.writer.getId().equals(authUser.getId())) {
-            throw new NotEqualWriterException(this.getId(), authUser.getEmail());
-        }
-    }
-
 }

@@ -1,5 +1,6 @@
 package org.blog.api.repository.post;
 
+import org.blog.api.domain.Account;
 import org.blog.api.domain.Post;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -10,6 +11,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 /**
  * Created by melchor
@@ -18,6 +20,8 @@ import javax.annotation.Nullable;
  */
 @Transactional(readOnly = true)
 public interface PostRepository extends JpaRepository<Post, Long>, CustomPostRepository {
+
+    Optional<Post> findByIdAndWriter(Long id, Account writer);
 
     @Query("SELECT p FROM Post p WHERE p.active = true")
     @NonNull

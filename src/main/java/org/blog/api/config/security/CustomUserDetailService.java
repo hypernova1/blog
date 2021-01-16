@@ -24,7 +24,7 @@ public class CustomUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Account account = accounts.findByEmail(email).orElseThrow(() -> new AccountNotFoundException(email));
-        return UserPrincipal.create(account);
+        return new MemberAccount(account);
     }
 
 }

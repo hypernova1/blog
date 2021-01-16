@@ -1,7 +1,6 @@
 package org.blog.api.service;
 
 import lombok.RequiredArgsConstructor;
-import org.blog.api.config.security.UserPrincipal;
 import org.blog.api.domain.Account;
 import org.blog.api.domain.Category;
 import org.blog.api.domain.Post;
@@ -45,15 +44,14 @@ public class PostService {
     }
 
     @Transactional
-    public Long register(PostDto.RegisterRequest request, UserPrincipal authUser) {
+    public Long register(PostDto.RegisterRequest request, Account account) {
         Category category = categories.findByName(request.getCategoryName())
                 .orElseThrow(() -> new CategoryNotFoundException(request.getCategoryName()));
         tagService.findOrCreate(request.getTags());
         Post post = modelMapper.map(request, Post.class);
         post.setCategory(category);
         Post savedPost = posts.save(post);
-        Account writer = modelMapper.map(authUser, Account.class);
-        savedPost.setWriter(writer);
+        savedPost.setWriter(account);
         return savedPost.getId();
     }
 
@@ -63,22 +61,20 @@ public class PostService {
     }
 
     @Transactional
-    public PostDto.DetailResponse update(Long id, PostDto.UpdateRequest request, UserPrincipal authUser) {
+    public PostDto.DetailResponse update(Long id, PostDto.UpdateRequest request, Account account) {
         tagService.findOrCreate(request.getTags());
         Category category = categories.findByName(request.getCategoryName())
                 .orElseThrow(() -> new CategoryNotFoundException(request.getCategoryName()));
-        Post savedPost = posts.findById(id).orElseThrow(() -> new PostNotFoundException(id));
-        savedPost.verifyWriter(authUser);
+        Post savedPost = posts.findByIdAndWriter(id, account).orElseThrow(() -> new PostNotFoundException(id));
         savedPost.update(request);
         savedPost.setCategory(category);
         return modelMapper.map(savedPost, PostDto.DetailResponse.class);
     }
 
     @Transactional
-    public void delete(Long id, UserPrincipal authUser) {
-        Post savedPost = posts.findById(id).orElseThrow(() -> new PostNotFoundException(id));
-        savedPost.verifyWriter(authUser);
-        posts.deleteById(id);
+    public void delete(Long id, Account account) {
+        Post savedPost = posts.findByIdAndWriter(id, account).orElseThrow(() -> new PostNotFoundException(id));
+        posts.delete(savedPost);
     }
 
 }
